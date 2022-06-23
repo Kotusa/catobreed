@@ -1,0 +1,10 @@
+.git
+.github
+.husky
+.vscode
+.dockerignore
+*.log
+Dockerfile
+build
+node_modules
+release

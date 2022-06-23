@@ -1,0 +1,47 @@
+#!/bin/bash
+
+command=$1
+arguments=${@:2}
+
+export host_gid=`id -g`
+export host_uid=`id -u`
+
+RUN="docker-compose run --rm"
+
+case $command in
+
+up | start | stop | down | build)
+docker-compose $command $arguments
+;;
+
+yarn | npx)
+$RUN catobreed_client $command $arguments
+;;
+
+help)
+cat <<EOF
+Script for easy running commonly used commands within docker containers.
+
+Examples of usage:
+$0 help            # Show this help
+
+Common commands:
+$0 up              # Launch everything
+$0 build           # Rebuild all images or specified image ($0 build back)
+$0 start           # Launch everything and detach
+$0 stop            # Stop everything and keep containers
+$0 down            # Stop and remove containers
+
+Run command inside a container using $0 command [arguments].
+Supported commands are:
+$0 yarn            # Any yarn command
+$0 npx             # npx
+EOF
+
+;;
+
+*)
+$0 help
+;;
+
+esac
